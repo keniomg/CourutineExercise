@@ -1220,7 +1220,7 @@ GameObject:
   - component: {fileID: 1815537725}
   - component: {fileID: 1815537724}
   - component: {fileID: 1815537723}
-  - component: {fileID: 1815537729}
+  - component: {fileID: 1815537728}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1335,13 +1335,13 @@ Transform:
   m_GameObject: {fileID: 1815537722}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.81, y: 0.63, z: 22.06}
+  m_LocalPosition: {x: 24.287, y: 0.63, z: 22.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1815537729
+--- !u!114 &1815537728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1350,24 +1350,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1815537722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf778a187f7a3eb41862fadc6ba3358b, type: 3}
+  m_Script: {fileID: 11500000, guid: b6c03aca42a6f0542be553971a71c343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionRaduis: 5
   _minimumInstantiatedObjectsNumber: 2
   _maximumInstantiatedObjectsNumber: 7
   _currentDivideChance: 100
   _explosionEffect: {fileID: 0}
   _colors:
   - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 0.17849922, g: 1, b: 0, a: 0}
-  - {r: 0, g: 0.24718332, b: 1, a: 0}
-  - {r: 1, g: 0.96840537, b: 0, a: 0}
-  - {r: 1, g: 0, b: 0.9039521, a: 0}
-  - {r: 1, g: 0.49055117, b: 0, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
-  _explosionForce: 0
+  - {r: 1, g: 0.24242005, b: 0, a: 0}
+  - {r: 0.310601, g: 1, b: 0, a: 0}
+  - {r: 1, g: 0.6213611, b: 0, a: 0}
+  - {r: 1, g: 0, b: 0.6591687, a: 0}
+  - {r: 0, g: 0.16084719, b: 1, a: 0}
+  _baseExplosionForce: 100
+  _baseExplosionRaduis: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

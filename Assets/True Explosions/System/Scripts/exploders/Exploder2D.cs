@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Exploder2D : ExploderEffect {
+public class Exploder2D : Exploder2 {
 	public override void disableCollider() {
 		if (GetComponent<Collider2D>()) {
 			wasTrigger = GetComponent<Collider2D>().isTrigger;

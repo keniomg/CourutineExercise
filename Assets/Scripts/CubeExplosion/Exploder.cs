@@ -17,6 +17,12 @@ public class Exploder : MonoBehaviour
     private int _randomInstantiatedObjectsNumber;
     private int _randomColorNumber;
     private float _scaleAfterDivideMultiplier = 0.5f;
+    private MeshRenderer _meshRenderer;
+
+    private void Awake()
+    {
+        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
+    }
 
     private void OnMouseDown()
     {
@@ -35,16 +41,15 @@ public class Exploder : MonoBehaviour
 
             for (int i = 0; i < _randomInstantiatedObjectsNumber; i++)            
             {
-                GameObject objectInstantiatedByExplosion = Instantiate(this.gameObject, transform.position, Quaternion.identity);
-                MeshRenderer objectInstantiatedByExplosionMeshRenderer = objectInstantiatedByExplosion.GetComponent<MeshRenderer>();
-                ChangeObjectColor(objectInstantiatedByExplosion, objectInstantiatedByExplosionMeshRenderer);
+                MeshRenderer renderer = Instantiate(_meshRenderer, transform.position, Quaternion.identity);
+                ChangeObjectColor(renderer);
             }
         }
 
         Destroy(gameObject);
     }
 
-    private void ChangeObjectColor(GameObject gameObject, MeshRenderer meshRenderer)
+    private void ChangeObjectColor(MeshRenderer meshRenderer)
     {
         _randomColorNumber = Random.Range(_minimumColorsNumber, _colors.Length);
         meshRenderer.material.color = _colors[_randomColorNumber];
@@ -57,7 +62,7 @@ public class Exploder : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            if (hit.TryGetComponent(out ExploderEffect explodableObject))
+            if (hit.TryGetComponent(out Exploder explodableObject))
             {
                 explodableObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, transform.position, _explosionRaduis);
             }

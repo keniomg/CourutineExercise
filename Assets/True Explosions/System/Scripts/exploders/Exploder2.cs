@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class ExploderEffect : MonoBehaviour {
+public class Exploder2 : MonoBehaviour {
 
 	public float explosionTime = 0;
 	public float randomizeExplosionTime = 0;
