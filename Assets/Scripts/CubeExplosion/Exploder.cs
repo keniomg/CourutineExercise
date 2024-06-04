@@ -18,6 +18,11 @@ public class Exploder : MonoBehaviour
     private int _randomColorNumber;
     private float _scaleAfterDivideMultiplier = 0.5f;
 
+    private void Awake()
+    {
+        MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
+    }
+
     private void OnMouseDown()
     {
         Explode();
@@ -32,24 +37,22 @@ public class Exploder : MonoBehaviour
         {
             transform.localScale *= _scaleAfterDivideMultiplier;
             _currentDivideChance /= 2;
-            ChangeObjectColor(gameObject);
 
             for (int i = 0; i < _randomInstantiatedObjectsNumber; i++)            
             {
                 GameObject objectInstantiatedByExplosion = Instantiate(this.gameObject, transform.position, Quaternion.identity);
-                ChangeObjectColor(objectInstantiatedByExplosion);
+                MeshRenderer objectInstantiatedByExplosionMeshRenderer = objectInstantiatedByExplosion.GetComponent<MeshRenderer>();
+                ChangeObjectColor(objectInstantiatedByExplosion, objectInstantiatedByExplosionMeshRenderer);
             }
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Destroy(gameObject);
     }
 
-    private void ChangeObjectColor(GameObject gameObject)
+    private void ChangeObjectColor(GameObject gameObject, MeshRenderer meshRenderer)
     {
         _randomColorNumber = Random.Range(_minimumColorsNumber, _colors.Length);
-        gameObject.GetComponent<MeshRenderer>().material.color = _colors[_randomColorNumber];
+        meshRenderer.material.color = _colors[_randomColorNumber];
     }
 
     public void Explode()
@@ -59,13 +62,12 @@ public class Exploder : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            if (hit.TryGetComponent(out Exploder explodableObject))
+            if (hit.TryGetComponent(out ExploderEffect explodableObject))
             {
                 explodableObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, transform.position, _explosionRaduis);
             }
         }
 
         Instantiate(_explosionEffect, transform.position, Quaternion.identity);
-        Destroy(gameObject);
     }
 }
