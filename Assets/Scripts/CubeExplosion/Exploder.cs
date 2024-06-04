@@ -18,11 +18,6 @@ public class Exploder : MonoBehaviour
     private int _randomColorNumber;
     private float _scaleAfterDivideMultiplier = 0.5f;
 
-    private void Awake()
-    {
-        MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
-    }
-
     private void OnMouseDown()
     {
         Explode();
