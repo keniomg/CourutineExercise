@@ -38,10 +38,10 @@ public class ObjectExploder2 : MonoBehaviour
     private void SpawnDividedGameObjects()
     {
         _randomDivideChanceNumber = Random.Range(_minimumDivideChance, _maximumDivideChance);
-        _randomInstantiatedObjectsNumber = Random.Range(_minimumInstantiatedObjectsNumber, _maximumInstantiatedObjectsNumber);
 
         if (_randomDivideChanceNumber <= _currentDivideChance)
         {
+            _randomInstantiatedObjectsNumber = Random.Range(_minimumInstantiatedObjectsNumber, _maximumInstantiatedObjectsNumber);
             _isObjectDivide = true;
             transform.localScale *= _scaleAfterDivideMultiplier;
             _currentDivideChance /= 2;
@@ -91,8 +91,8 @@ public class ObjectExploder2 : MonoBehaviour
                     explodableObject.GetComponent<Rigidbody>().AddExplosionForce(totalExplosionForce, transform.position, totalExplosionRaduis);
                 }
             }
+            
+            Instantiate(_explosionEffect, transform.position, Quaternion.identity);
         }
-        
-        Instantiate(_explosionEffect, transform.position, Quaternion.identity);
     }
 }
