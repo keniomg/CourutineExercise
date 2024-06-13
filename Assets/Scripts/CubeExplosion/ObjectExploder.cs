@@ -1,73 +1,42 @@
 using UnityEngine;
+using System;
 
 public class ObjectExploder : MonoBehaviour
 {
     [SerializeField] private float _explosionRaduis;
-    [SerializeField] private int _minimumInstantiatedObjectsNumber;
-    [SerializeField] private int _maximumInstantiatedObjectsNumber;
-    [SerializeField] private int _currentDivideChance;
     [SerializeField] private ParticleSystem _explosionEffect;
-    [SerializeField] private Color[] _colors;
     [SerializeField] private int _explosionForce;
+    [SerializeField] ObjectSpawner _spawner;
 
-    private int _minimumColorsNumber = 0;
-    private int _minimumDivideChance = 0;
-    private int _maximumDivideChance = 100;
-    private int _randomDivideChanceNumber;
-    private int _randomInstantiatedObjectsNumber;
-    private int _randomColorNumber;
-    private float _scaleAfterDivideMultiplier = 0.5f;
-    private MeshRenderer _meshRenderer;
-
-    private void Awake()
-    {
-        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
-    }
+    public event Action ObjectExplode;
 
     private void OnMouseDown()
     {
         Explode();
     }
 
-    private void SpawnDividedGameObjects()
+    private void OnEnable()
     {
-        _randomDivideChanceNumber = Random.Range(_minimumDivideChance, _maximumDivideChance);
+        _spawner.ObjectSpawned += AddExplosionForce;
+    }
 
-        if (_randomDivideChanceNumber <= _currentDivideChance)
-        {
-            _randomInstantiatedObjectsNumber = Random.Range(_minimumInstantiatedObjectsNumber, _maximumInstantiatedObjectsNumber);
-            transform.localScale *= _scaleAfterDivideMultiplier;
-            _currentDivideChance /= 2;
+    private void OnDisable()
+    {
+        _spawner.ObjectSpawned -= AddExplosionForce;
+    }
 
-            for (int i = 0; i < _randomInstantiatedObjectsNumber; i++)            
-            {
-                MeshRenderer renderer = Instantiate(_meshRenderer, transform.position, Quaternion.identity);
-                ChangeObjectColor(renderer);
-            }
-        }
-
+    private void Explode()
+    {
+        ObjectExplode?.Invoke();
         Destroy(gameObject);
-    }
-
-    private void ChangeObjectColor(MeshRenderer meshRenderer)
-    {
-        _randomColorNumber = Random.Range(_minimumColorsNumber, _colors.Length);
-        meshRenderer.material.color = _colors[_randomColorNumber];
-    }
-
-    public void Explode()
-    {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRaduis);
-        SpawnDividedGameObjects();
-
-        foreach (Collider hit in hits)
-        {
-            if (hit.TryGetComponent(out ObjectExploder explodableObject))
-            {
-                explodableObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, transform.position, _explosionRaduis);
-            }
-        }
-
         Instantiate(_explosionEffect, transform.position, Quaternion.identity);
+    }
+
+    private void AddExplosionForce()
+    {
+        foreach (SpawnedObject spawnedObject in _spawner.GetSpawnedObjects())
+        {
+            spawnedObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, transform.position, _explosionRaduis);
+        }
     }
 }
