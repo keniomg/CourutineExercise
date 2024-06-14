@@ -6,9 +6,9 @@ public class ObjectExploder : MonoBehaviour
     [SerializeField] private float _explosionRaduis;
     [SerializeField] private ParticleSystem _explosionEffect;
     [SerializeField] private int _explosionForce;
-    [SerializeField] ObjectSpawner _spawner;
+    [SerializeField] private ObjectSpawner _spawner;
 
-    public event Action ObjectExplode;
+    public event Action ObjectExploded;
 
     private void OnMouseDown()
     {
@@ -27,7 +27,7 @@ public class ObjectExploder : MonoBehaviour
 
     private void Explode()
     {
-        ObjectExplode?.Invoke();
+        ObjectExploded?.Invoke();
         Destroy(gameObject);
         Instantiate(_explosionEffect, transform.position, Quaternion.identity);
     }

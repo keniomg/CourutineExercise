@@ -13,36 +13,34 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private ObjectExploder _exploder;
 
     private List<SpawnedObject> _spawnedObjects;
-    private int _minimumDivideChance = 0;
-    private int _maximumDivideChance = 100;
-    private int _randomDivideChanceNumber;
-    private int _randomInstantiatedObjectsNumber;
-    private float _scaleAfterDivideMultiplier = 0.5f;
     public event Action ObjectSpawn;
     public event Action ObjectSpawned;
 
     private void OnEnable()
     {
-        _exploder.ObjectExplode += SpawnDividedGameObjects;
+        _exploder.ObjectExploded += SpawnDividedGameObjects;
     }
 
     private void OnDisable()
     {
-        _exploder.ObjectExplode -= SpawnDividedGameObjects;
+        _exploder.ObjectExploded -= SpawnDividedGameObjects;
     }
 
     private void SpawnDividedGameObjects()
     {
         _spawnedObjects = new List<SpawnedObject>();
-        _randomDivideChanceNumber = Random.Range(_minimumDivideChance, _maximumDivideChance);
+        float scaleAfterDivideMultiplier = 0.5f;
+        int minimumDivideChance = 0;
+        int maximumDivideChance = 100;
+        int randomDivideChanceNumber = Random.Range(minimumDivideChance, maximumDivideChance);
 
-        if (_randomDivideChanceNumber <= _spawnedObject.GetCurrentDivideChance())
+        if (randomDivideChanceNumber <= _spawnedObject.GetCurrentDivideChance())
         {
-            _randomInstantiatedObjectsNumber = Random.Range(_minimumInstantiatedObjectsNumber, _maximumInstantiatedObjectsNumber);
-            _spawnedObject.transform.localScale *= _scaleAfterDivideMultiplier;
+            int randomInstantiatedObjectsNumber = Random.Range(_minimumInstantiatedObjectsNumber, _maximumInstantiatedObjectsNumber);
+            _spawnedObject.transform.localScale *= scaleAfterDivideMultiplier;
             ObjectSpawn?.Invoke();
 
-            for (int i = 0; i < _randomInstantiatedObjectsNumber; i++)
+            for (int i = 0; i < randomInstantiatedObjectsNumber; i++)
             {
                 _spawnedObjects.Add(Instantiate(_spawnedObject, transform.position, Quaternion.identity));
             }

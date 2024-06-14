@@ -9,9 +9,6 @@ public class ObjectColorChanger : MonoBehaviour
     [SerializeField] private ObjectSpawner _spawner;
 
     private List<SpawnedObject> _spawnedObjects;
-    private List<MeshRenderer> _spawnedObjectsRenderer;
-    private int _minimumColorsNumber = 0;
-    private int _randomColorNumber;
 
     private void OnEnable()
     {
@@ -25,20 +22,21 @@ public class ObjectColorChanger : MonoBehaviour
 
     private void ChangeObjectColor()
     {
+        List<MeshRenderer> spawnedObjectsRenderer = new List<MeshRenderer>();
+        int minimumColorsNumber = 0;
         _spawnedObjects = _spawner.GetSpawnedObjects();
-        _spawnedObjectsRenderer = new List<MeshRenderer>();
 
         foreach (SpawnedObject divideableObject in _spawnedObjects)
         {
-            _spawnedObjectsRenderer.Add(divideableObject.GetComponent<MeshRenderer>());
+            spawnedObjectsRenderer.Add(divideableObject.GetComponent<MeshRenderer>());
         }
 
-        if (_spawnedObjectsRenderer != null)
+        if (spawnedObjectsRenderer != null)
         {
-            foreach (MeshRenderer divideableObjectRenderer in _spawnedObjectsRenderer)
+            foreach (MeshRenderer divideableObjectRenderer in spawnedObjectsRenderer)
             {
-                _randomColorNumber = Random.Range(_minimumColorsNumber, _colors.Length);
-                divideableObjectRenderer.material.color = _colors[_randomColorNumber];
+                int randomColorNumber = Random.Range(minimumColorsNumber, _colors.Length);
+                divideableObjectRenderer.material.color = _colors[randomColorNumber];
             }
         }
     }
