@@ -1,21 +1,9 @@
 using System;
 using UnityEngine;
 
-public class ObjectExploder2 : MonoBehaviour
+public class ObjectExploder2 : ObjectExploder
 {
-    [SerializeField] private ParticleSystem _explosionEffect;
-    [SerializeField] private int _baseExplosionForce;
-    [SerializeField] private float _baseExplosionRaduis;
-    [SerializeField] private ObjectSpawner _spawner;
-
-    private int _spaceDimensionsNumber = 3;
-    private float _averageScaleValue;
-    private float _localScaleExplosionForceCoefficient;
-    private float _localScaleExplosionRadiusCoefficient;
-    private float _distanceExplosionForceCoefficient;
     private bool _isObjectSpawned;
-
-    public Action ObjectExplode;
 
     private void Awake()
     {
@@ -24,12 +12,12 @@ public class ObjectExploder2 : MonoBehaviour
 
     private void OnEnable()
     {
-        _spawner.ObjectSpawned += SetObjectSpawnedStatusTrue;
+        _spawner.ObjectSpawnEnded += SetObjectSpawnedStatusTrue;
     }
 
     private void OnDisable()
     {
-        _spawner.ObjectSpawned -= SetObjectSpawnedStatusTrue;
+        _spawner.ObjectSpawnEnded -= SetObjectSpawnedStatusTrue;
     }
 
     private void OnMouseDown()
@@ -46,6 +34,8 @@ public class ObjectExploder2 : MonoBehaviour
 
     private void Explode()
     {
+        InvokeObjectExploded();
+
         if (_isObjectSpawned == false)
         {
             Instantiate(_explosionEffect, transform.position, Quaternion.identity);
@@ -62,18 +52,19 @@ public class ObjectExploder2 : MonoBehaviour
 
     private void AddExplosionForce()
     {
-        _averageScaleValue = (transform.localScale.x + transform.localScale.x + transform.localScale.x) / _spaceDimensionsNumber;
-        _localScaleExplosionForceCoefficient = 1 / _averageScaleValue;
-        _localScaleExplosionRadiusCoefficient = 1 / _averageScaleValue;
-        float totalExplosionForce = _baseExplosionForce * _localScaleExplosionForceCoefficient;
-        float totalExplosionRaduis = _distanceExplosionForceCoefficient * _localScaleExplosionRadiusCoefficient;
-        Collider[] hits = Physics.OverlapSphere(transform.position, _baseExplosionRaduis);
+        int spaceDimensionsNumber = 3;
+        float averageScaleValue = (transform.localScale.x + transform.localScale.x + transform.localScale.x) / spaceDimensionsNumber;
+        float localScaleExplosionForceCoefficient = 1 / averageScaleValue;
+        float localScaleExplosionRadiusCoefficient = 1 / averageScaleValue;
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRaduis);
 
         foreach (Collider hit in hits)
         {
             if (hit.TryGetComponent(out ObjectExploder2 explodableObject))
             {
-                _distanceExplosionForceCoefficient = 1 / GetDistanceBetweenObjects(gameObject.transform, explodableObject.transform);
+                float distanceExplosionForceCoefficient = 1 / GetDistanceBetweenObjects(gameObject.transform, explodableObject.transform);
+                float totalExplosionForce = _explosionForce * localScaleExplosionForceCoefficient;
+                float totalExplosionRaduis = distanceExplosionForceCoefficient * localScaleExplosionRadiusCoefficient;
                 explodableObject.GetComponent<Rigidbody>().AddExplosionForce(totalExplosionForce, transform.position, totalExplosionRaduis);
             }
         }

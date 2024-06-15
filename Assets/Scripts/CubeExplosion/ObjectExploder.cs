@@ -3,10 +3,10 @@ using System;
 
 public class ObjectExploder : MonoBehaviour
 {
-    [SerializeField] private float _explosionRaduis;
-    [SerializeField] private ParticleSystem _explosionEffect;
-    [SerializeField] private int _explosionForce;
-    [SerializeField] private ObjectSpawner _spawner;
+    [SerializeField] protected float _explosionRaduis;
+    [SerializeField] protected ParticleSystem _explosionEffect;
+    [SerializeField] protected int _explosionForce;
+    [SerializeField] protected ObjectSpawner _spawner;
 
     public event Action ObjectExploded;
 
@@ -17,17 +17,17 @@ public class ObjectExploder : MonoBehaviour
 
     private void OnEnable()
     {
-        _spawner.ObjectSpawned += AddExplosionForce;
+        _spawner.ObjectSpawnEnded += AddExplosionForce;
     }
 
     private void OnDisable()
     {
-        _spawner.ObjectSpawned -= AddExplosionForce;
+        _spawner.ObjectSpawnEnded -= AddExplosionForce;
     }
 
     private void Explode()
     {
-        ObjectExploded?.Invoke();
+        InvokeObjectExploded();
         Destroy(gameObject);
         Instantiate(_explosionEffect, transform.position, Quaternion.identity);
     }
@@ -38,5 +38,10 @@ public class ObjectExploder : MonoBehaviour
         {
             spawnedObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, transform.position, _explosionRaduis);
         }
+    }
+
+    protected void InvokeObjectExploded()
+    {
+        ObjectExploded?.Invoke();
     }
 }

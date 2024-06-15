@@ -8,25 +8,23 @@ public class ObjectColorChanger : MonoBehaviour
     [SerializeField] private Color[] _colors;
     [SerializeField] private ObjectSpawner _spawner;
 
-    private List<SpawnedObject> _spawnedObjects;
-
     private void OnEnable()
     {
-        _spawner.ObjectSpawned += ChangeObjectColor;
+        _spawner.ObjectSpawnEnded += ChangeObjectColor;
     }
 
     private void OnDisable()
     {
-        _spawner.ObjectSpawned -= ChangeObjectColor;
+        _spawner.ObjectSpawnEnded -= ChangeObjectColor;
     }
 
     private void ChangeObjectColor()
     {
         List<MeshRenderer> spawnedObjectsRenderer = new List<MeshRenderer>();
         int minimumColorsNumber = 0;
-        _spawnedObjects = _spawner.GetSpawnedObjects();
+        IReadOnlyList<SpawnedObject> spawnedObjects = _spawner.GetSpawnedObjects();
 
-        foreach (SpawnedObject divideableObject in _spawnedObjects)
+        foreach (SpawnedObject divideableObject in spawnedObjects)
         {
             spawnedObjectsRenderer.Add(divideableObject.GetComponent<MeshRenderer>());
         }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class CameraController : MonoBehaviour
 {
@@ -11,31 +10,32 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _minimumCameraRunValue = 1f;
     [SerializeField] private float _maximumCameraRunValue = 1000f;
 
-    private Vector3 _lastMousePosition = new Vector3(255, 255, 255);
     private float _totalCameraRun = 1f;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        int rightMouseButtonNumber = 1;
+        string xMouseAxis = "Mouse X";
+        string yMouseAxis = "Mouse Y";
+
+        if (Input.GetMouseButtonDown(rightMouseButtonNumber))
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(rightMouseButtonNumber))
         {
-            float mouseX = Input.GetAxis("Mouse X") * _cameraMouseSensivity;
-            float mouseY = Input.GetAxis("Mouse Y") * _cameraMouseSensivity;
+            float mouseX = Input.GetAxis(xMouseAxis) * _cameraMouseSensivity;
+            float mouseY = Input.GetAxis(yMouseAxis) * _cameraMouseSensivity;
             transform.eulerAngles += new Vector3(-mouseY, mouseX, 0);
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(rightMouseButtonNumber))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-
-        _lastMousePosition = Input.mousePosition;
 
         Vector3 baseInputPosition = GetBaseInput();
 
@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour
             else
             {
                 _totalCameraRun = Mathf.Clamp(_totalCameraRun * _cameraSlowDownMultiplier, _minimumCameraRunValue, _maximumCameraRunValue);
-                baseInputPosition = baseInputPosition * _baseCameraSpeed;
+                baseInputPosition *= _baseCameraSpeed;
             }
         }
 
@@ -63,25 +63,29 @@ public class CameraController : MonoBehaviour
     private Vector3 GetBaseInput()
     {
         Vector3 inputDirection = new Vector3();
+        KeyCode forwardInputKey = KeyCode.W;
+        KeyCode backInputKey = KeyCode.S;
+        KeyCode leftInputKey = KeyCode.A;
+        KeyCode rightInputKey = KeyCode.D;
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(forwardInputKey))
         {
-            inputDirection += new Vector3(0, 0, 1);
+            inputDirection += Vector3.forward;
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(backInputKey))
         {
-            inputDirection += new Vector3(0, 0, -1);
+            inputDirection += Vector3.back;
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(leftInputKey))
         {
-            inputDirection += new Vector3(-1, 0, 0);
+            inputDirection += Vector3.left;
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(rightInputKey))
         {
-            inputDirection += new Vector3(1, 0, 0);
+            inputDirection += Vector3.right;
         }
 
         return inputDirection;

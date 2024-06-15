@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Transform))]
 [RequireComponent (typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
 
@@ -11,22 +10,22 @@ public class SpawnedObject : MonoBehaviour
 
     private void DecreaseCurrentDivideChance()
     {
-        _currentDivideChance /= 2;
+        int divideChanceDivider = 2;
+        _currentDivideChance /= divideChanceDivider;
     }
 
     private void OnEnable()
     {
-        _spawner.ObjectSpawn += DecreaseCurrentDivideChance;
+        _spawner.ObjectSpawnStarted += DecreaseCurrentDivideChance;
     }
 
     private void OnDisable()
     {
-        _spawner.ObjectSpawn -= DecreaseCurrentDivideChance;
+        _spawner.ObjectSpawnStarted -= DecreaseCurrentDivideChance;
     }
 
     public int GetCurrentDivideChance()
     {
-        int currentDivideChance = _currentDivideChance;
-        return currentDivideChance;
+        return _currentDivideChance;
     }
 }

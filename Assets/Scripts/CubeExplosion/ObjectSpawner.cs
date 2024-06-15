@@ -13,8 +13,9 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private ObjectExploder _exploder;
 
     private List<SpawnedObject> _spawnedObjects;
-    public event Action ObjectSpawn;
-    public event Action ObjectSpawned;
+
+    public event Action ObjectSpawnStarted;
+    public event Action ObjectSpawnEnded;
 
     private void OnEnable()
     {
@@ -38,14 +39,14 @@ public class ObjectSpawner : MonoBehaviour
         {
             int randomInstantiatedObjectsNumber = Random.Range(_minimumInstantiatedObjectsNumber, _maximumInstantiatedObjectsNumber);
             _spawnedObject.transform.localScale *= scaleAfterDivideMultiplier;
-            ObjectSpawn?.Invoke();
+            ObjectSpawnStarted?.Invoke();
 
             for (int i = 0; i < randomInstantiatedObjectsNumber; i++)
             {
                 _spawnedObjects.Add(Instantiate(_spawnedObject, transform.position, Quaternion.identity));
             }
 
-            ObjectSpawned?.Invoke();
+            ObjectSpawnEnded?.Invoke();
         }
         else
         {
@@ -53,9 +54,9 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
-    public List<SpawnedObject> GetSpawnedObjects()
+    public IReadOnlyList<SpawnedObject> GetSpawnedObjects()
     {
-        List<SpawnedObject> spawnedObjects = new List<SpawnedObject>();
-        return spawnedObjects = _spawnedObjects;
+        IReadOnlyList<SpawnedObject> spawnedObjects = _spawnedObjects;
+        return spawnedObjects;
     }
 }
