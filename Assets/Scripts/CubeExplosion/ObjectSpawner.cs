@@ -16,7 +16,7 @@ public class ObjectSpawner : MonoBehaviour
 
     public event Action ObjectSpawnStarted;
     public event Action ObjectSpawnEnded;
-
+    public event Action ObjectNotSpawned;
     private void OnEnable()
     {
         _exploder.ObjectExploded += SpawnDividedGameObjects;
@@ -51,6 +51,7 @@ public class ObjectSpawner : MonoBehaviour
         else
         {
             _spawnedObjects = null;
+            ObjectNotSpawned?.Invoke();
         }
     }
 

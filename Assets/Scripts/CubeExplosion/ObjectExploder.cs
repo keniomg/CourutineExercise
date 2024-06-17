@@ -3,45 +3,45 @@ using System;
 
 public class ObjectExploder : MonoBehaviour
 {
-    [SerializeField] protected float _explosionRaduis;
-    [SerializeField] protected ParticleSystem _explosionEffect;
-    [SerializeField] protected int _explosionForce;
-    [SerializeField] protected ObjectSpawner _spawner;
+    [SerializeField] protected float ExplosionRaduis;
+    [SerializeField] protected ParticleSystem ExplosionEffect;
+    [SerializeField] protected int ExplosionForce;
+    [SerializeField] protected ObjectSpawner Spawner;
 
     public event Action ObjectExploded;
-
-    private void OnMouseDown()
-    {
-        Explode();
-    }
-
-    private void OnEnable()
-    {
-        _spawner.ObjectSpawnEnded += AddExplosionForce;
-    }
-
-    private void OnDisable()
-    {
-        _spawner.ObjectSpawnEnded -= AddExplosionForce;
-    }
-
-    private void Explode()
-    {
-        InvokeObjectExploded();
-        Destroy(gameObject);
-        Instantiate(_explosionEffect, transform.position, Quaternion.identity);
-    }
-
-    private void AddExplosionForce()
-    {
-        foreach (SpawnedObject spawnedObject in _spawner.GetSpawnedObjects())
-        {
-            spawnedObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, transform.position, _explosionRaduis);
-        }
-    }
 
     protected void InvokeObjectExploded()
     {
         ObjectExploded?.Invoke();
+    }
+
+    virtual protected void OnMouseDown()
+    {
+        Explode();
+    }
+
+    virtual protected void OnEnable()
+    {
+        Spawner.ObjectSpawnEnded += AddExplosionForce;
+    }
+
+    virtual protected void OnDisable()
+    {
+        Spawner.ObjectSpawnEnded -= AddExplosionForce;
+    }
+
+    virtual protected void Explode()
+    {
+        InvokeObjectExploded();
+        Destroy(gameObject);
+        Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
+    }
+
+    virtual protected void AddExplosionForce()
+    {
+        foreach (SpawnedObject spawnedObject in Spawner.GetSpawnedObjects())
+        {
+            spawnedObject.GetComponent<Rigidbody>().AddExplosionForce(ExplosionForce, transform.position, ExplosionRaduis);
+        }
     }
 }

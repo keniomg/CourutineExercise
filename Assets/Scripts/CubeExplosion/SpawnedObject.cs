@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[RequireComponent (typeof(MeshRenderer))]
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(MeshRenderer), typeof(Rigidbody))]
 
 public class SpawnedObject : MonoBehaviour
 {

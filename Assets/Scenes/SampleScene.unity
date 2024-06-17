@@ -369,11 +369,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c03aca42a6f0542be553971a71c343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionRaduis: 10
-  _explosionEffect: {fileID: 560014183069459152, guid: 621e45f610d611746802ad828f66b094,
+  ExplosionRaduis: 15
+  ExplosionEffect: {fileID: 560014183069459152, guid: 621e45f610d611746802ad828f66b094,
     type: 3}
-  _explosionForce: 100
-  _spawner: {fileID: 345841135}
+  ExplosionForce: 100
+  Spawner: {fileID: 345841135}
 --- !u!114 &345841133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1142,11 +1142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf778a187f7a3eb41862fadc6ba3358b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionRaduis: 10
-  _explosionEffect: {fileID: 560014183069459152, guid: 621e45f610d611746802ad828f66b094,
+  ExplosionRaduis: 0
+  ExplosionEffect: {fileID: 560014183069459152, guid: 621e45f610d611746802ad828f66b094,
     type: 3}
-  _explosionForce: 100
-  _spawner: {fileID: 1798685923}
+  ExplosionForce: 0
+  Spawner: {fileID: 1798685923}
 --- !u!114 &1798685925
 MonoBehaviour:
   m_ObjectHideFlags: 0
